@@ -1,4 +1,4 @@
-# [WIP] ethereum-zk-client
+# [WIP] Ultra-light Ethereum Client
 
 An ultra-light Ethereum client that uses ZK SNARKs to prove the validity of Ethereum block headers.  
 Can be used as an Ethereum light node or in light client based bridges.
