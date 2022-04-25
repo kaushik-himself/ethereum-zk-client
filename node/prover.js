@@ -48,9 +48,11 @@ async function exportCalldata(
     return [a, b, c, circuitInput];
 }
 
-module.exports = { exportCalldata };
+const wasmPath = __dirname + "/public/eth_block.wasm";
+const zkeyPath = __dirname + "/public/eth_block_final.zkey";
 
-exports.generateProofAndExportCalldata = function (input) {
-    return exportCalldata(
-        input, "/public/eth_block.wasm", "/public/eth_block_final.zkey");
-}
+var generateProofAndExportCalldata = function (input) {
+    return exportCalldata(input, wasmPath, zkeyPath);
+};
+
+module.exports = { generateProofAndExportCalldata };

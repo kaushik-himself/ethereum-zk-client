@@ -1,13 +1,9 @@
 var prover = require('../prover');
 var chai = require('chai');
-var assert = require('assert');
 var expect = chai.expect;
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var should = chai.should();
-
-const wasmPath = __dirname + "/../public/eth_block.wasm";
-const zkeyPath = __dirname + "/../public/eth_block_final.zkey";
 
 describe('Test Prover', () => {
     it('generates proof for valid input', () => {
@@ -22,7 +18,7 @@ describe('Test Prover', () => {
             computedHash: 43124134123
         };
 
-        return prover.exportCalldata(input, wasmPath, zkeyPath)
+        return prover.generateProofAndExportCalldata(input)
             .then(calldata => {
                 expect(calldata.length).to.equal(4);
             });
@@ -40,7 +36,7 @@ describe('Test Prover', () => {
             computedHash: 43124134123
         };
 
-        return prover.exportCalldata(input, wasmPath, zkeyPath)
+        return prover.generateProofAndExportCalldata(input)
             .should.be.rejected;
     });
 
@@ -56,7 +52,7 @@ describe('Test Prover', () => {
             computedHash: 43124134123
         };
 
-        return prover.exportCalldata(input, wasmPath, zkeyPath)
+        return prover.generateProofAndExportCalldata(input)
             .should.be.rejected;
     });
 
@@ -72,7 +68,7 @@ describe('Test Prover', () => {
             computedHash: 43124134123
         };
 
-        return prover.exportCalldata(input, wasmPath, zkeyPath)
+        return prover.generateProofAndExportCalldata(input)
             .should.be.rejected;
     });
 
@@ -88,7 +84,7 @@ describe('Test Prover', () => {
             computedHash: 43124134113
         };
 
-        return prover.exportCalldata(input, wasmPath, zkeyPath)
+        return prover.generateProofAndExportCalldata(input)
             .should.be.rejected;
     });
 });
