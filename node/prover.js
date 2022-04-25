@@ -20,7 +20,7 @@ function unstringifyBigInts(o) {
     }
 }
 
-export async function generateProofAndExportCalldata(
+async function exportCalldata(
     input,
     wasmPath,
     zkeyPath) {
@@ -46,4 +46,9 @@ export async function generateProofAndExportCalldata(
     const circuitInput = [argv[8]];
 
     return [a, b, c, circuitInput];
+}
+
+exports.generateProofAndExportCalldata = function (input) {
+    return exportCalldata(
+        input, "/public/eth_block.wasm", "/public/eth_block_final.zkey");
 }

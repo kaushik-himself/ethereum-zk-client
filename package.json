@@ -1,4 +1,24 @@
 {
+  "name": "ethereum-zk-client",
+  "version": "1.0.0",
+  "description": "An ultra-light Ethereum client that generates ZK proofs of an Ethereum block header and creates its calldata for verification.",
+  "main": "node/prover.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kaushik-himself/ethereum-zk-client.git"
+  },
+  "keywords": [
+    "Ethereum",
+    "Light client",
+    "Bridge",
+    "Harmony Ethereum bridge",
+    "Harmony"
+  ],
+  "author": "k15n",
+  "license": "ISC",
   "dependencies": {
     "circomlib": "^2.0.3",
     "snarkjs": "^0.4.16"
