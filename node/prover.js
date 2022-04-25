@@ -1,4 +1,4 @@
-import { groth16 } from "snarkjs";
+var snarkjs = require('snarkjs');
 
 function unstringifyBigInts(o) {
     if (typeof o == "string" && /^[0-9]+$/.test(o)) {
@@ -24,10 +24,10 @@ async function exportCalldata(
     input,
     wasmPath,
     zkeyPath) {
-    const { proof, publicSignals } = await groth16.fullProve(
+    const { proof, publicSignals } = await snarkjs.groth16.fullProve(
         input, wasmPath, zkeyPath);
 
-    const calldata = await groth16.exportSolidityCallData(
+    const calldata = await snarkjs.groth16.exportSolidityCallData(
         unstringifyBigInts(proof),
         unstringifyBigInts(publicSignals)
     );
@@ -47,6 +47,8 @@ async function exportCalldata(
 
     return [a, b, c, circuitInput];
 }
+
+module.exports = { exportCalldata };
 
 exports.generateProofAndExportCalldata = function (input) {
     return exportCalldata(
