@@ -6,7 +6,7 @@ chai.use(chaiAsPromised);
 var should = chai.should();
 
 describe('Test Prover', () => {
-    it('generates proof for valid input', () => {
+    it('generates proof for valid input', async () => {
         const input = {
             blockNumber: 14620207,
             parentBlockNumber: 14620206,
@@ -18,10 +18,8 @@ describe('Test Prover', () => {
             computedHash: 43124134123
         };
 
-        return prover.generateProofAndExportCalldata(input)
-            .then(calldata => {
-                expect(calldata.length).to.equal(4);
-            });
+        const calldata = await prover.generateProofAndExportCalldata(input);
+        expect(calldata.length).to.equal(4);
     });
 
     it('fails when block number is lower than parent', () => {
@@ -86,5 +84,22 @@ describe('Test Prover', () => {
 
         return prover.generateProofAndExportCalldata(input)
             .should.be.rejected;
+    });
+
+    it('generates a proof which is verifiable', async () => {
+        const input = {
+            blockNumber: 14620207,
+            parentBlockNumber: 14620206,
+            blockTimestamp: 1650880812,
+            parentBlockTimestamp: 1650880012,
+            blockDifficulty: 12864277285843166,
+            minDifficulty: 1273056876000000,
+            blockHash: 43124134123,
+            computedHash: 43124134123
+        };
+
+        const { proof, publicSignals } = await prover.prove(input);
+        const res = await prover.verify(proof, publicSignals);
+        expect(res).to.equal(true);
     });
 });

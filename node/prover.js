@@ -1,4 +1,5 @@
-var snarkjs = require('snarkjs');
+const snarkjs = require('snarkjs');
+const fs = require('fs');
 
 function unstringifyBigInts(o) {
     if (typeof o == "string" && /^[0-9]+$/.test(o)) {
@@ -20,6 +21,19 @@ function unstringifyBigInts(o) {
     }
 }
 
+const wasmPath = __dirname + "/public/eth_block.wasm";
+const zkeyPath = __dirname + "/public/eth_block_final.zkey";
+const verificationKeyPath = __dirname + "/public/verification_key.json";
+
+/**
+ * Creates a proof of the input and generates the calldata parameters to
+ * be passed to the verifier smart contract.
+ *
+ * @param {any} input the input Ethereum block header data to be proven
+ * @param {String} wasmPath the path to the wasm file
+ * @param {String} zkeyPath the path to the final zkey
+ * @returns {Array} calldata parameters to be passed to the smart contract
+ */
 async function exportCalldata(
     input,
     wasmPath,
@@ -48,11 +62,42 @@ async function exportCalldata(
     return [a, b, c, circuitInput];
 }
 
-const wasmPath = __dirname + "/public/eth_block.wasm";
-const zkeyPath = __dirname + "/public/eth_block_final.zkey";
-
-var generateProofAndExportCalldata = function (input) {
+/**
+ * Helper method which sets the wasmPath and the zkeyPath and generates
+ * the proof calldata.
+ *
+ * @param {any} input the input Ethereum block header data to be proven
+ * @returns {Array} calldata parameters to be passed to the smart contract
+ */
+async function generateProofAndExportCalldata(input) {
     return exportCalldata(input, wasmPath, zkeyPath);
 };
 
-module.exports = { generateProofAndExportCalldata };
+/**
+ * Generate the proof and publicSignals using the Circom circuit.
+ *
+ * @param {any} input the input Ethereum block header data to be proven
+ * @returns the proof and the public signals
+ */
+async function prove(input) {
+    return snarkjs.groth16.fullProve(input, wasmPath, zkeyPath);
+}
+
+/**
+ * Verify the proof.
+ *
+ * @param proof
+ * @param publicSignals
+ * @returns {boolean} the result of the verification
+ */
+async function verify(proof, publicSignals) {
+    const verificationKey = JSON.parse(fs.readFileSync(verificationKeyPath));
+
+    return snarkjs.groth16.verify(verificationKey, publicSignals, proof);
+}
+
+module.exports = {
+    generateProofAndExportCalldata,
+    prove,
+    verify
+};
