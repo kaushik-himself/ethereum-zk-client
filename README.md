@@ -26,10 +26,11 @@ Currently, two usecases of this library are obvious:
 2. Use in light-client based bridges to Ethereum.
 
 ## Usage
-1. Import the client library using: `yarn add ethereum-zk-client` or `npm i ethereum-zk-client`
-2. Run `yarn test` for testing.
-3. Read an Ethereum block header.
-4. Parse the block's parent header.
+1. Import the client library using: `yarn add ethereum-zk-client` or `npm i ethereum-zk-client`.
+2. `cd circuits` and `./setup_prover.sh` for the initial circuit and keys setup.
+3. `cd node` and run `yarn test` for testing.
+4. Read an Ethereum block header.
+5. Parse the block's parent header.
 
 ### Usage in bridges
 The verifier is deployed as a smart contract to the target blockchain. A solidity verifier can be found in the `contracts/` folder.  
