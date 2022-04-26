@@ -1,6 +1,6 @@
 {
   "name": "ethereum-zk-client",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "An ultra-light Ethereum client that generates ZK proofs of an Ethereum block header and creates its calldata for verification.",
   "main": "node/prover.js",
   "scripts": {
